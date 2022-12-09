@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+       {{ category.description|truncatewords:155 }}
+    {% else %}
+        welcome to demo store where you csn buys different items...
+    {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+         {{ category.name }} - demo store
+      {% else %}
+          see our new collections - demo store
+      {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if category %}
+
+<div>
+    <div class="row my_row_class" >
+        <div class="mx-auto">
+        <p><a href="{% url 'shop:allProdCat' %}">our product collections"</a> </p>
+    </div>
+        </div>
+</div>
+{% endif %}
+
+<div class="max_auto">
+   {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title" >{{category.name}}</h1>
+    <p class="text-justify" >{{category.description}}</p>
+</div>
+   {% else %}
+<center>
+<div>
+<img class="my_image my_image_padding" src="{% static 'img/banner1.jpg' %}" alt="our products" width="1000px;" height="500px;" >
+</div>
+    </center>
+<br>
+
+ <div class="container">
+        <section class="py-4 py-xl-5">
+            <div class="d-flex p-2" >
+                <div class=" text-white bg-primary border rounded border-0 border-primary d-flex flex-column justify-content-between flex-lg-row p-4 p-md-5 ">
+                    <div class="pb-2 pb-lg-1">
+                        <h2 class="fw-bold mb-2 text-center">our products collections</h2>
+                        <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type
+        specimen book</p>
+                    </div>
+                    <div class="my-2"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+
+
+{% endif %}
+
+
+
+<div class="container">
+    <div class="row max-auto">
+
+{% for product in products.object_list %}
+<div class="my_bottom_margin col-9 col-sm-12  col-md-4  xol-lg-4">
+
+    <div class="row" >
+        <div class="card" style="width: 20rem;">
+            <a href="{{product.get_url}}"> <img  src="{{product.image.url}}" class="card-img-top rounded" alt="{{product.name}}"></a>
+  <div class="card-body"  >
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">{{product.price}}</p>
+    <a href="{{product.get_url}}" class="btn btn-primary">Buy</a>
+  </div>
+</div>
+  </div>
+</div>
+
+ {% endfor %}
+    </div>
+
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+
+ <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+   {% endfor %}
+    </div>
+{% endif %}
+    </div>
+</div>
+{% endblock %}
+</div>
